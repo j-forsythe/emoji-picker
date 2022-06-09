@@ -4,7 +4,10 @@ import reducer from "./reducer";
 export const EmojiContext = createContext();
 
 const initialState = {
-  emoji: {}
+  emoji: {},
+  recentlyUsed: {
+    "Recently Used": []
+  }
 };
 
 export default function Provider(props) {

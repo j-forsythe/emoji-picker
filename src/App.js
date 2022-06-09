@@ -7,15 +7,15 @@ import { Popover } from "react-tiny-popover";
 export default function App() {
   const [isPickerOpen, setPickerOpen] = useState(false);
   const [state, dispatch] = useContext(EmojiContext);
-  const { emoji } = state;
+  const { emoji, recentlyUsed } = state;
 
-  const renderEmojis = () => {
+  const renderEmojis = (jsonData) => {
     const emojiList = [];
-    Object.entries(emojisByGroup).forEach(([emojiGroup, data]) => {
+    Object.entries(jsonData).forEach(([emojiGroup, data]) => {
       emojiList.push(
         <li key={emojiGroup}>
-          <p>{emojiGroup}</p>
-          {data.map((emojiData) => (
+          <p className="group-name">{emojiGroup}</p>
+          {data?.map((emojiData) => (
             <button
               key={emojiData.name}
               onClick={() =>
@@ -37,7 +37,12 @@ export default function App() {
       <Popover
         isOpen={isPickerOpen}
         positions={["bottom", "left", "right", "top"]}
-        content={() => <ul className="picker-wrapper">{renderEmojis()}</ul>}
+        content={
+          <ul className="picker-wrapper">
+            {renderEmojis(recentlyUsed)}
+            {renderEmojis(emojisByGroup)}
+          </ul>
+        }
         onClickOutside={() => setPickerOpen(false)}
       >
         <button onClick={() => setPickerOpen(!isPickerOpen)}>Click me!</button>
